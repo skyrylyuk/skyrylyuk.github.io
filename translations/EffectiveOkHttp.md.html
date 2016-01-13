@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8" />
+      <title>EffectiveOkHttp</title>
+      <style>.markdown-preview:not([data-use-github-style]) { padding: 2em; font-size: 1.2em; color: rgb(131, 148, 150); overflow: auto; background-color: rgb(0, 43, 54); }
+.markdown-preview:not([data-use-github-style]) > :first-child { margin-top: 0px; }
+.markdown-preview:not([data-use-github-style]) h1, .markdown-preview:not([data-use-github-style]) h2, .markdown-preview:not([data-use-github-style]) h3, .markdown-preview:not([data-use-github-style]) h4, .markdown-preview:not([data-use-github-style]) h5, .markdown-preview:not([data-use-github-style]) h6 { line-height: 1.2; margin-top: 1.5em; margin-bottom: 0.5em; color: rgb(219, 224, 225); }
+.markdown-preview:not([data-use-github-style]) h1 { font-size: 2.4em; font-weight: 300; }
+.markdown-preview:not([data-use-github-style]) h2 { font-size: 1.8em; font-weight: 400; }
+.markdown-preview:not([data-use-github-style]) h3 { font-size: 1.5em; font-weight: 500; }
+.markdown-preview:not([data-use-github-style]) h4 { font-size: 1.2em; font-weight: 600; }
+.markdown-preview:not([data-use-github-style]) h5 { font-size: 1.1em; font-weight: 600; }
+.markdown-preview:not([data-use-github-style]) h6 { font-size: 1em; font-weight: 600; }
+.markdown-preview:not([data-use-github-style]) strong { color: rgb(219, 224, 225); }
+.markdown-preview:not([data-use-github-style]) del { color: rgb(175, 186, 187); }
+.markdown-preview:not([data-use-github-style]) a, .markdown-preview:not([data-use-github-style]) a code { color: rgb(253, 246, 227); }
+.markdown-preview:not([data-use-github-style]) img { max-width: 100%; }
+.markdown-preview:not([data-use-github-style]) > p { margin-top: 0px; margin-bottom: 1.5em; }
+.markdown-preview:not([data-use-github-style]) > ul, .markdown-preview:not([data-use-github-style]) > ol { margin-bottom: 1.5em; }
+.markdown-preview:not([data-use-github-style]) blockquote { margin: 1.5em 0px; font-size: inherit; color: rgb(175, 186, 187); border-color: rgb(0, 108, 136); border-width: 4px; }
+.markdown-preview:not([data-use-github-style]) hr { margin: 3em 0px; border-top-width: 2px; border-top-style: dashed; border-top-color: rgb(0, 108, 136); background: none; }
+.markdown-preview:not([data-use-github-style]) table { margin: 1.5em 0px; }
+.markdown-preview:not([data-use-github-style]) th { color: rgb(219, 224, 225); }
+.markdown-preview:not([data-use-github-style]) th, .markdown-preview:not([data-use-github-style]) td { padding: 0.66em 1em; border: 1px solid rgb(0, 108, 136); }
+.markdown-preview:not([data-use-github-style]) code { color: rgb(219, 224, 225); background-color: rgb(0, 75, 95); }
+.markdown-preview:not([data-use-github-style]) pre.editor-colors { margin: 1.5em 0px; padding: 1em; font-size: 0.92em; border-radius: 3px; background-color: rgb(0, 59, 74); }
+.markdown-preview:not([data-use-github-style]) kbd { color: rgb(219, 224, 225); border-width: 1px 1px 2px; border-style: solid; border-color: rgb(0, 108, 136) rgb(0, 108, 136) rgb(0, 84, 105); background-color: rgb(0, 75, 95); }
+.markdown-preview[data-use-github-style] { font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif; line-height: 1.6; word-wrap: break-word; padding: 30px; font-size: 16px; color: rgb(51, 51, 51); overflow: scroll; background-color: rgb(255, 255, 255); }
+.markdown-preview[data-use-github-style] > :first-child { margin-top: 0px !important; }
+.markdown-preview[data-use-github-style] > :last-child { margin-bottom: 0px !important; }
+.markdown-preview[data-use-github-style] a:not([href]) { color: inherit; text-decoration: none; }
+.markdown-preview[data-use-github-style] .absent { color: rgb(204, 0, 0); }
+.markdown-preview[data-use-github-style] .anchor { position: absolute; top: 0px; left: 0px; display: block; padding-right: 6px; padding-left: 30px; margin-left: -30px; }
+.markdown-preview[data-use-github-style] .anchor:focus { outline: none; }
+.markdown-preview[data-use-github-style] h1, .markdown-preview[data-use-github-style] h2, .markdown-preview[data-use-github-style] h3, .markdown-preview[data-use-github-style] h4, .markdown-preview[data-use-github-style] h5, .markdown-preview[data-use-github-style] h6 { position: relative; margin-top: 1em; margin-bottom: 16px; font-weight: bold; line-height: 1.4; }
+.markdown-preview[data-use-github-style] h1 .octicon-link, .markdown-preview[data-use-github-style] h2 .octicon-link, .markdown-preview[data-use-github-style] h3 .octicon-link, .markdown-preview[data-use-github-style] h4 .octicon-link, .markdown-preview[data-use-github-style] h5 .octicon-link, .markdown-preview[data-use-github-style] h6 .octicon-link { display: none; color: rgb(0, 0, 0); vertical-align: middle; }
+.markdown-preview[data-use-github-style] h1:hover .anchor, .markdown-preview[data-use-github-style] h2:hover .anchor, .markdown-preview[data-use-github-style] h3:hover .anchor, .markdown-preview[data-use-github-style] h4:hover .anchor, .markdown-preview[data-use-github-style] h5:hover .anchor, .markdown-preview[data-use-github-style] h6:hover .anchor { padding-left: 8px; margin-left: -30px; text-decoration: none; }
+.markdown-preview[data-use-github-style] h1:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h2:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h3:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h4:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h5:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h6:hover .anchor .octicon-link { display: inline-block; }
+.markdown-preview[data-use-github-style] h1 tt, .markdown-preview[data-use-github-style] h2 tt, .markdown-preview[data-use-github-style] h3 tt, .markdown-preview[data-use-github-style] h4 tt, .markdown-preview[data-use-github-style] h5 tt, .markdown-preview[data-use-github-style] h6 tt, .markdown-preview[data-use-github-style] h1 code, .markdown-preview[data-use-github-style] h2 code, .markdown-preview[data-use-github-style] h3 code, .markdown-preview[data-use-github-style] h4 code, .markdown-preview[data-use-github-style] h5 code, .markdown-preview[data-use-github-style] h6 code { font-size: inherit; }
+.markdown-preview[data-use-github-style] h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+.markdown-preview[data-use-github-style] h1 .anchor { line-height: 1; }
+.markdown-preview[data-use-github-style] h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+.markdown-preview[data-use-github-style] h2 .anchor { line-height: 1; }
+.markdown-preview[data-use-github-style] h3 { font-size: 1.5em; line-height: 1.43; }
+.markdown-preview[data-use-github-style] h3 .anchor { line-height: 1.2; }
+.markdown-preview[data-use-github-style] h4 { font-size: 1.25em; }
+.markdown-preview[data-use-github-style] h4 .anchor { line-height: 1.2; }
+.markdown-preview[data-use-github-style] h5 { font-size: 1em; }
+.markdown-preview[data-use-github-style] h5 .anchor { line-height: 1.1; }
+.markdown-preview[data-use-github-style] h6 { font-size: 1em; color: rgb(119, 119, 119); }
+.markdown-preview[data-use-github-style] h6 .anchor { line-height: 1.1; }
+.markdown-preview[data-use-github-style] p, .markdown-preview[data-use-github-style] blockquote, .markdown-preview[data-use-github-style] ul, .markdown-preview[data-use-github-style] ol, .markdown-preview[data-use-github-style] dl, .markdown-preview[data-use-github-style] table, .markdown-preview[data-use-github-style] pre { margin-top: 0px; margin-bottom: 16px; }
+.markdown-preview[data-use-github-style] hr { height: 4px; padding: 0px; margin: 16px 0px; border: 0px none; background-color: rgb(231, 231, 231); }
+.markdown-preview[data-use-github-style] ul, .markdown-preview[data-use-github-style] ol { padding-left: 2em; }
+.markdown-preview[data-use-github-style] ul.no-list, .markdown-preview[data-use-github-style] ol.no-list { padding: 0px; list-style-type: none; }
+.markdown-preview[data-use-github-style] ul ul, .markdown-preview[data-use-github-style] ul ol, .markdown-preview[data-use-github-style] ol ol, .markdown-preview[data-use-github-style] ol ul { margin-top: 0px; margin-bottom: 0px; }
+.markdown-preview[data-use-github-style] li > p { margin-top: 16px; }
+.markdown-preview[data-use-github-style] dl { padding: 0px; }
+.markdown-preview[data-use-github-style] dl dt { padding: 0px; margin-top: 16px; font-size: 1em; font-style: italic; font-weight: bold; }
+.markdown-preview[data-use-github-style] dl dd { padding: 0px 16px; margin-bottom: 16px; }
+.markdown-preview[data-use-github-style] blockquote { padding: 0px 15px; color: rgb(119, 119, 119); border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); }
+.markdown-preview[data-use-github-style] blockquote > :first-child { margin-top: 0px; }
+.markdown-preview[data-use-github-style] blockquote > :last-child { margin-bottom: 0px; }
+.markdown-preview[data-use-github-style] table { display: block; width: 100%; overflow: auto; word-break: keep-all; }
+.markdown-preview[data-use-github-style] table th { font-weight: bold; }
+.markdown-preview[data-use-github-style] table th, .markdown-preview[data-use-github-style] table td { padding: 6px 13px; border: 1px solid rgb(221, 221, 221); }
+.markdown-preview[data-use-github-style] table tr { border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); background-color: rgb(255, 255, 255); }
+.markdown-preview[data-use-github-style] table tr:nth-child(2n) { background-color: rgb(248, 248, 248); }
+.markdown-preview[data-use-github-style] img { max-width: 100%; box-sizing: border-box; }
+.markdown-preview[data-use-github-style] .emoji { max-width: none; }
+.markdown-preview[data-use-github-style] span.frame { display: block; overflow: hidden; }
+.markdown-preview[data-use-github-style] span.frame > span { display: block; float: left; width: auto; padding: 7px; margin: 13px 0px 0px; overflow: hidden; border: 1px solid rgb(221, 221, 221); }
+.markdown-preview[data-use-github-style] span.frame span img { display: block; float: left; }
+.markdown-preview[data-use-github-style] span.frame span span { display: block; padding: 5px 0px 0px; clear: both; color: rgb(51, 51, 51); }
+.markdown-preview[data-use-github-style] span.align-center { display: block; overflow: hidden; clear: both; }
+.markdown-preview[data-use-github-style] span.align-center > span { display: block; margin: 13px auto 0px; overflow: hidden; text-align: center; }
+.markdown-preview[data-use-github-style] span.align-center span img { margin: 0px auto; text-align: center; }
+.markdown-preview[data-use-github-style] span.align-right { display: block; overflow: hidden; clear: both; }
+.markdown-preview[data-use-github-style] span.align-right > span { display: block; margin: 13px 0px 0px; overflow: hidden; text-align: right; }
+.markdown-preview[data-use-github-style] span.align-right span img { margin: 0px; text-align: right; }
+.markdown-preview[data-use-github-style] span.float-left { display: block; float: left; margin-right: 13px; overflow: hidden; }
+.markdown-preview[data-use-github-style] span.float-left span { margin: 13px 0px 0px; }
+.markdown-preview[data-use-github-style] span.float-right { display: block; float: right; margin-left: 13px; overflow: hidden; }
+.markdown-preview[data-use-github-style] span.float-right > span { display: block; margin: 13px auto 0px; overflow: hidden; text-align: right; }
+.markdown-preview[data-use-github-style] code, .markdown-preview[data-use-github-style] tt { padding: 0.2em 0px; margin: 0px; font-size: 85%; border-radius: 3px; background-color: rgba(0, 0, 0, 0.0392157); }
+.markdown-preview[data-use-github-style] code::before, .markdown-preview[data-use-github-style] tt::before, .markdown-preview[data-use-github-style] code::after, .markdown-preview[data-use-github-style] tt::after { letter-spacing: -0.2em; content: " "; }
+.markdown-preview[data-use-github-style] code br, .markdown-preview[data-use-github-style] tt br { display: none; }
+.markdown-preview[data-use-github-style] del code { text-decoration: inherit; }
+.markdown-preview[data-use-github-style] pre > code { padding: 0px; margin: 0px; font-size: 100%; word-break: normal; white-space: pre; border: 0px; background: transparent; }
+.markdown-preview[data-use-github-style] .highlight { margin-bottom: 16px; }
+.markdown-preview[data-use-github-style] .highlight pre, .markdown-preview[data-use-github-style] pre { padding: 16px; overflow: auto; font-size: 85%; line-height: 1.45; border-radius: 3px; background-color: rgb(247, 247, 247); }
+.markdown-preview[data-use-github-style] .highlight pre { margin-bottom: 0px; word-break: normal; }
+.markdown-preview[data-use-github-style] pre { word-wrap: normal; }
+.markdown-preview[data-use-github-style] pre code, .markdown-preview[data-use-github-style] pre tt { display: inline; max-width: initial; padding: 0px; margin: 0px; overflow: initial; line-height: inherit; word-wrap: normal; border: 0px; background-color: transparent; }
+.markdown-preview[data-use-github-style] pre code::before, .markdown-preview[data-use-github-style] pre tt::before, .markdown-preview[data-use-github-style] pre code::after, .markdown-preview[data-use-github-style] pre tt::after { content: normal; }
+.markdown-preview[data-use-github-style] kbd { display: inline-block; padding: 3px 5px; font-size: 11px; line-height: 10px; color: rgb(85, 85, 85); vertical-align: middle; border-style: solid; border-width: 1px; border-color: rgb(204, 204, 204) rgb(204, 204, 204) rgb(187, 187, 187); border-radius: 3px; box-shadow: rgb(187, 187, 187) 0px -1px 0px inset; background-color: rgb(252, 252, 252); }
+.markdown-preview[data-use-github-style] a { color: rgb(51, 122, 183); }
+.markdown-preview[data-use-github-style] code { color: inherit; }
+.markdown-preview[data-use-github-style] pre.editor-colors { padding: 0.8em 1em; margin-bottom: 1em; font-size: 0.85em; border-radius: 4px; overflow: auto; }
+.scrollbars-visible-always .markdown-preview pre.editor-colors::shadow .vertical-scrollbar, .scrollbars-visible-always .markdown-preview pre.editor-colors::shadow .horizontal-scrollbar { visibility: hidden; }
+.scrollbars-visible-always .markdown-preview pre.editor-colors:hover::shadow .vertical-scrollbar, .scrollbars-visible-always .markdown-preview pre.editor-colors:hover::shadow .horizontal-scrollbar { visibility: visible; }
+.bracket-matcher .region {
+  border-bottom: 1px dotted lime;
+  position: absolute;
+}
+
+.spell-check-misspelling .region {
+  border-bottom: 2px dotted rgba(255, 51, 51, 0.75);
+}
+
+pre.editor-colors,
+.host {
+  background-color: #002b36;
+  color: #839496;
+}
+pre.editor-colors .invisible-character,
+.host .invisible-character {
+  color: rgba(101, 123, 131, 0.2);
+}
+pre.editor-colors .indent-guide,
+.host .indent-guide {
+  color: rgba(101, 123, 131, 0.2);
+}
+pre.editor-colors .gutter,
+.host .gutter {
+  background-color: #073642;
+  color: #839496;
+}
+pre.editor-colors .gutter .line-number,
+.host .gutter .line-number {
+  opacity: 1;
+}
+pre.editor-colors .gutter .line-number.folded,
+.host .gutter .line-number.folded,
+pre.editor-colors .gutter .line-number:after,
+.host .gutter .line-number:after,
+pre.editor-colors .fold-marker:after,
+.host .fold-marker:after {
+  color: #d33682;
+}
+pre.editor-colors .cursor,
+.host .cursor {
+  border-color: #fdf6e3;
+}
+pre.editor-colors .selection .region,
+.host .selection .region {
+  background-color: #094554;
+}
+pre.editor-colors .line-number.cursor-line-no-selection,
+.host .line-number.cursor-line-no-selection {
+  background-color: #0a4d5e;
+}
+.bracket-matcher .region {
+  background-color: rgba(88, 110, 117, 0.8);
+  opacity: 0.3;
+}
+.comment {
+  color: #586e75;
+  font-style: italic;
+}
+.entity {
+  color: #839496;
+}
+.entity .punctuation {
+  color: #dc322f;
+}
+.entity.name {
+  color: #cb4b16;
+}
+.entity.name.tag {
+  color: #268bd2;
+}
+.entity.constant {
+  color: #dc322f;
+}
+.entity.attribute-name {
+  color: #586e75;
+}
+.keyword {
+  color: #859900;
+}
+.keyword.other.special-method {
+  color: #cb4b16;
+}
+.storage.type {
+  color: #268bd2;
+}
+.storage.class.type {
+  color: #d33682;
+}
+.storage.modifier {
+  color: #268bd2;
+}
+.constant {
+  color: #b58900;
+}
+.constant.numeric,
+.constant.boolean,
+.constant.symbol,
+.constant.symbol .punctuation {
+  color: #2aa198;
+}
+.constant.symbol.hashkey {
+  color: #dc322f;
+}
+.constant.symbol.hashkey .punctuation {
+  color: #dc322f;
+}
+.delimiter,
+.brace {
+  color: #268bd2;
+}
+.delimiter,
+.round {
+  color: #859900;
+}
+.delimiter.period {
+  color: #859900;
+}
+.invalid.deprecated {
+  text-decoration: underline;
+  color: #dc322f;
+}
+.invalid.illegal {
+  color: #dc322f;
+}
+.method .name {
+  color: #268bd2;
+}
+.operator.assignment {
+  color: #93a1a1;
+}
+.parameter {
+  color: #dc322f;
+}
+.property-name {
+  color: #859900;
+}
+.property-value .unit {
+  color: #839496;
+}
+.string {
+  color: #2aa198;
+}
+.string .constant.character.escape {
+  color: #dc322f;
+  font-weight: bold;
+}
+.string .punctuation.string {
+  color: #2aa198;
+}
+.string.regexp {
+  color: #2aa198;
+}
+.string.regexp .string.regexp.arbitrary-repetition {
+  color: #2aa198;
+}
+.variable {
+  color: #2aa198;
+}
+.variable.instance {
+  color: #268bd2;
+}
+.variable.constant {
+  color: #586e75;
+}
+.variable.parameter {
+  color: #dc322f;
+}
+.support {
+  color: #cb4b16;
+}
+.support.class {
+  color: #dc322f;
+}
+.terminator {
+  color: #859900;
+}
+.source.c .meta.preprocessor,
+.source.c\+\+ .meta.preprocessor {
+  color: #dc322f;
+}
+.source.c .keyword.control.import,
+.source.c\+\+ .keyword.control.import {
+  color: #dc322f;
+}
+.source.c .punctuation.string,
+.source.c\+\+ .punctuation.string {
+  color: #2aa198;
+}
+.source.c .constant,
+.source.c\+\+ .constant {
+  color: #dc322f;
+}
+.source.c .constant.numeric,
+.source.c\+\+ .constant.numeric,
+.source.c .constant.language.c,
+.source.c\+\+ .constant.language.c {
+  color: #2aa198;
+}
+.source.c .storage,
+.source.c\+\+ .storage {
+  color: #b58900;
+}
+.source.c .entity,
+.source.c\+\+ .entity {
+  color: #839496;
+}
+.source.c .entity.name.function.preprocessor,
+.source.c\+\+ .entity.name.function.preprocessor {
+  color: #dc322f;
+}
+.source.c .support.type,
+.source.c\+\+ .support.type {
+  color: #b58900;
+}
+.source.c .support.type.posix-reserved,
+.source.c\+\+ .support.type.posix-reserved {
+  color: #839496;
+}
+.source.c .variable.other.dot-access,
+.source.c\+\+ .variable.other.dot-access {
+  color: #839496;
+}
+.source.c .variable.parameter.preprocessor,
+.source.c\+\+ .variable.parameter.preprocessor {
+  color: #dc322f;
+}
+.source.css .entity.name {
+  color: #859900;
+}
+.source.css .punctuation.section {
+  color: #268bd2;
+}
+.source.css .punctuation.separator {
+  color: #839496;
+}
+.source.css .punctuation.terminator {
+  color: #839496;
+}
+.source.css .punctuation.definition.entity {
+  color: #268bd2;
+}
+.source.css .punctuation.definition.constant {
+  color: #839496;
+}
+.source.css .brace {
+  color: #268bd2;
+}
+.source.css .variable {
+  color: #268bd2;
+}
+.source.css .attribute-name.class {
+  color: #268bd2;
+}
+.source.css .property-name {
+  color: #b58900;
+}
+.source.css .property-value {
+  color: #2aa198;
+}
+.source.css .unit {
+  color: #2aa198;
+}
+.source.css .support.function {
+  color: #268bd2;
+}
+.source.css .rgb-value {
+  color: #2aa198;
+}
+.source.css .id {
+  color: #268bd2;
+}
+.source.css .pseudo-element {
+  color: #cb4b16;
+}
+.source.css .pseudo-class {
+  color: #cb4b16;
+}
+.source.css .pseudo-class.attribute-name {
+  color: #cb4b16;
+}
+.source.coffee .support.class {
+  color: #859900;
+}
+.source.coffee .variable,
+.source.coffee .entity.name.function,
+.source.coffee .entity.name.class {
+  color: #268bd2;
+}
+.source.coffee .variable.parameter.function {
+  color: #839496;
+}
+.source.coffee .variable.other.readwrite {
+  color: #859900;
+}
+.source.coffee .storage.type.function {
+  color: #859900;
+}
+.source.coffee .entity.name {
+  color: #839496;
+}
+.source.coffee .meta.brace.round,
+.source.coffee .meta.brace.square {
+  color: #839496;
+}
+.source.coffee .meta.delimiter {
+  color: #839496;
+}
+.source.coffee .storage.type.class {
+  color: #859900;
+}
+.source.coffee .punctuation.terminator {
+  color: #839496;
+}
+.source.coffee .punctuation.section.embedded {
+  color: #dc322f;
+}
+.source.coffee .constant.numeric {
+  color: #d33682;
+}
+.source.coffee .constant.language.boolean {
+  color: #b58900;
+}
+pre.editor-colors .gutter .git-line-modified,
+.host .gutter .git-line-modified {
+  border-left: 2px solid #b58900;
+  padding-left: calc(0.5em - 2px);
+  color: #839496;
+}
+pre.editor-colors .gutter .git-line-added,
+.host .gutter .git-line-added {
+  border-left: 2px solid #859900;
+  padding-left: calc(0.5em - 2px);
+  color: #839496;
+}
+pre.editor-colors .gutter .git-line-removed,
+.host .gutter .git-line-removed {
+  border-left: 2px solid #dc322f;
+  padding-left: calc(0.5em - 2px);
+  color: #839496;
+}
+.source.js .constant {
+  color: #859900;
+}
+.source.js .comma {
+  color: #839496;
+}
+.source.js .support.class {
+  color: #859900;
+}
+.source.js .entity.name.type {
+  color: #b58900;
+}
+.source.js .entity.name {
+  color: #839496;
+}
+.source.js .meta.brace {
+  color: #839496;
+}
+.source.js .keyword {
+  color: #839496;
+}
+.source.js .keyword.operator.new {
+  color: #859900;
+}
+.source.js .keyword.control {
+  color: #859900;
+}
+.source.js .keyword.control.regexp {
+  color: #2aa198;
+}
+.source.js .variable {
+  color: #268bd2;
+}
+.source.js .variable.parameter {
+  color: #839496;
+}
+.source.js .regexp {
+  color: #2aa198;
+}
+.source.js .support.function {
+  color: #6c71c4;
+}
+.source.js .support.constant {
+  color: #839496;
+}
+.source.js .constant.numeric {
+  color: #839496;
+}
+.source.js .punctuation.terminator.statement {
+  color: #839496;
+}
+.source.js .meta.delimiter.method.period {
+  color: #839496;
+}
+.source.js .meta.brace.square {
+  color: #268bd2;
+}
+.source.js .meta.brace.curly {
+  color: #268bd2;
+}
+.source.js.jsx .entity.name.tag {
+  color: #268bd2;
+}
+pre.editor-colors .gutter .line-number.linter-warning .icon-right:before,
+.host .gutter .line-number.linter-warning .icon-right:before {
+  color: #b58900;
+}
+pre.editor-colors .gutter .line-number.linter-error .icon-right:before,
+.host .gutter .line-number.linter-error .icon-right:before {
+  color: #dc322f;
+}
+pre.editor-colors .highlights .linter-warning .region,
+.host .highlights .linter-warning .region {
+  border: 1px solid #b58900;
+  background-image: none;
+  background-color: rgba(181, 137, 0, 0.2);
+}
+pre.editor-colors .highlights .linter-error .region,
+.host .highlights .linter-error .region {
+  border: 1px solid #dc322f;
+  background-image: none;
+  background-color: rgba(255, 16, 12, 0.2);
+}
+.gfm .link .entity {
+  color: #6c71c4;
+}
+.gfm .raw {
+  font-style: italic;
+}
+.gfm.support {
+  color: #dc322f;
+}
+.markup.italic {
+  font-style: italic;
+}
+.markup.bold {
+  font-weight: bold;
+}
+.markup.heading {
+  color: #cb4b16;
+}
+.markup.link {
+  color: #2aa198;
+}
+.source.php .storage.type.class {
+  color: #b58900;
+}
+.source.php .storage.type.function {
+  color: #dc322f;
+}
+.source.php .storage.modifier {
+  color: #b58900;
+}
+.source.php .entity.name.type.class {
+  color: #839496;
+}
+.source.php .entity.name.function {
+  color: #839496;
+}
+.source.php .entity.other {
+  color: #839496;
+}
+.source.php .variable {
+  color: #268bd2;
+}
+.source.php .punctuation.definition {
+  color: #839496;
+}
+.source.php .punctuation.definition.comment {
+  color: #586e75;
+}
+.source.php .punctuation.definition.array {
+  color: #dc322f;
+}
+.source.php .punctuation.definition.string {
+  color: #839496;
+}
+.source.php .punctuation.definition.variable {
+  color: #859900;
+}
+.source.php .punctuation.section.scope {
+  color: #dc322f;
+}
+.source.php .support.function.construct {
+  color: #b58900;
+}
+.source.php .support.function.array {
+  color: #859900;
+}
+.source.php .keyword.operator.class {
+  color: #b58900;
+}
+.source.php .keyword.operator.assignment {
+  color: #859900;
+}
+.source.php .keyword.other {
+  color: #dc322f;
+}
+.source.python .entity {
+  color: #839496;
+}
+.source.python .entity.name {
+  color: #268bd2;
+}
+.source.python .entity.other {
+  color: #268bd2;
+}
+.source.python .function {
+  color: #268bd2;
+}
+.source.python .function.magic {
+  color: #268bd2;
+}
+.source.python .punctuation.string {
+  color: #2aa198;
+}
+.source.python .keyword.operator {
+  color: #839496;
+}
+.source.python .keyword.operator.quantifier {
+  color: #2aa198;
+}
+.source.python .keyword.operator.logical {
+  color: #859900;
+}
+.source.python .keyword.control.import {
+  color: #cb4b16;
+}
+.source.python .keyword.other {
+  color: #859900;
+}
+.source.python .constant.language {
+  color: #268bd2;
+}
+.source.python .constant.character {
+  color: #2aa198;
+}
+.source.python .constant.other {
+  color: #dc322f;
+}
+.source.python .entity.name.type.class {
+  color: #268bd2;
+}
+.source.python .variable {
+  color: #839496;
+}
+.source.python .support.function.builtin {
+  color: #268bd2;
+}
+.source.python .support.type.exception.python {
+  color: #b58900;
+}
+.source.python .support.type.python {
+  color: #268bd2;
+}
+.source.python .storage.type.string {
+  color: #2aa198;
+}
+.source.python .storage.type.class {
+  color: #859900;
+}
+.source.python .storage.type.class.todo {
+  color: #d33682;
+}
+.source.python .storage.type.function {
+  color: #859900;
+}
+.source.python .punctuation.definition.parameters {
+  color: #839496;
+}
+.source.python .punctuation.section.function.begin {
+  color: #839496;
+}
+.source.python .punctuation.separator.parameters {
+  color: #839496;
+}
+.source.ruby .meta.embedded .punctuation.section {
+  color: #dc322f;
+}
+.source.ruby .punctuation.definition {
+  color: #839496;
+}
+.source.ruby .punctuation.definition.string {
+  color: #dc322f;
+}
+.source.ruby .punctuation.definition.comment {
+  color: #586e75;
+}
+.source.ruby .entity.inherited-class {
+  color: #b58900;
+}
+.source.ruby .variable.parameter {
+  color: #839496;
+}
+.source.ruby .variable.constant {
+  color: #b58900;
+}
+.source.ruby .instance .punctuation.definition {
+  color: #268bd2;
+}
+.source.ruby .class {
+  color: #b58900;
+}
+.source.ruby .class.control {
+  color: #839496;
+}
+.source.ruby .module {
+  color: #b58900;
+}
+.source.ruby .require .keyword.other.special-method {
+  color: #cb4b16;
+}
+.source.ruby .keyword.other.special-method {
+  color: #cb4b16;
+}
+.source.ruby .keyword.other {
+  color: #859900;
+}
+.source.ruby .keyword.control {
+  color: #859900;
+}
+.source.ruby .special-method {
+  color: #268bd2;
+}
+.source.ruby .symbol {
+  color: #2aa198;
+}
+.source.ruby .symbol .punctuation.definition {
+  color: #2aa198;
+}
+.source.ruby .hashkey {
+  color: #dc322f;
+}
+.source.ruby .hashkey .punctuation.definition {
+  color: #dc322f;
+}
+.source.ruby .string.regexp {
+  color: #dc322f;
+}
+.source.ruby .todo {
+  color: #d33682;
+}
+.source.ruby .variable.ruby.global {
+  color: #268bd2;
+}
+.source.ruby .variable.ruby.global .punctuation {
+  color: #268bd2;
+}
+.source.ruby .variable.block {
+  color: #268bd2;
+}
+.source.ruby .punctuation.separator {
+  color: #839496;
+}
+.source.ruby .string.interpolated .embedded.line.ruby .punctuation .source.ruby {
+  color: #dc322f;
+}
+.source.ruby .string.interpolated .embedded.line.ruby .source.ruby {
+  color: #839496;
+}
+.source.ruby .string.interpolated .embedded.line.ruby .source.ruby .punctuation.array,
+.source.ruby .string.interpolated .embedded.line.ruby .source.ruby .punctuation.function {
+  color: #839496;
+}
+.source.ruby .support.function {
+  color: #839496;
+}
+.source.ruby .support.function.kernel {
+  color: #859900;
+}
+.source.scala .variable {
+  color: #93a1a1;
+}
+.source.scala .declaration {
+  color: #93a1a1;
+  font-weight: bold;
+}
+.source.scala .comparison {
+  color: #93a1a1;
+}
+.source.scala .class,
+.source.scala .type {
+  color: #b58900;
+}
+.source.scala .val {
+  font-weight: normal;
+}
+.source.scala .variable {
+  font-weight: bold;
+}
+.source.scala .variable.parameter {
+  color: #6c71c4;
+  font-weight: normal;
+}
+.source.scala .control.flow {
+  color: #93a1a1;
+  font-weight: bold;
+}
+.source.scala .constant.language {
+  color: #93a1a1;
+  font-weight: bold;
+}
+.source.scala .function.declaration {
+  color: #6c71c4;
+}
+.source.scala .modifier.other {
+  font-weight: bold;
+}
+.source.scala .package {
+  color: #93a1a1;
+}
+.source.scala .variable.import {
+  font-weight: normal;
+}
+.source.scala .type .bounds,
+.source.scala .type .class {
+  color: #6c71c4;
+}
+.source.scala .documentation :not(.embedded).link.entity {
+  color: #268bd2;
+  text-decoration: underline;
+}
+.source.scala .documentation :not(.embedded) .class,
+.source.scala .documentation :not(.embedded) .parameter {
+  color: #93a1a1;
+}
+.source.scala .documentation :not(.embedded) .description {
+  color: #586e75;
+}
+.source.scala .embedded {
+  color: #93a1a1;
+  opacity: 0.8;
+  font-style: italic;
+}
+.source.scala .embedded .margin,
+.source.scala .embedded .delimiters {
+  font-style: normal;
+}
+.terminal {
+  background-color: #002b36;
+}
+.terminal .color-0 {
+  color: #839496;
+}
+.terminal .background-0 {
+  background-color: #002b36;
+}
+.terminal .color-1 {
+  color: #dc322f;
+}
+.terminal .background-1 {
+  background-color: #dc322f;
+}
+.terminal .color-2 {
+  color: #859900;
+}
+.terminal .background-2 {
+  background-color: #859900;
+}
+.terminal .color-3 {
+  color: #b58900;
+}
+.terminal .background-3 {
+  background-color: #b58900;
+}
+.terminal .color-4 {
+  color: #268bd2;
+}
+.terminal .background-4 {
+  background-color: #268bd2;
+}
+.terminal .color-5 {
+  color: #d33682;
+}
+.terminal .background-5 {
+  background-color: #d33682;
+}
+.terminal .color-6 {
+  color: #2aa198;
+}
+.terminal .background-6 {
+  background-color: #2aa198;
+}
+.terminal .color-7 {
+  color: #fdf6e3;
+}
+.terminal .background-7 {
+  background-color: #fdf6e3;
+}
+pre.editor-colors .wrap-guide,
+.host .wrap-guide {
+  background-color: #073642;
+}
+</style>
+  </head>
+  <body class='markdown-preview'><h1 id="-okhttp">Ефективне використання OkHttp</h1>
+<p>Дання статья є перекладом <a href="http://omgitsmgp.com/2015/12/02/effective-okhttp/">Effective OkHttp</a></p>
+<p><a href="http://square.github.io/okhttp/">OkHttp</a> був безціною библиотекой коли розроблявся Android додаток для <a href="https://www.khanacademy.org/">Khan Academy</a>. В той час, як пропонуєма конфігурація за замовчуванням є достатьо зручною у вкористанні річю, Нижче наведені деякі кроки, які допоможуть Вам стати більш продуктивним та досвідченим з OkHttp.</p>
+<h4 id="1-response-">1. Включити кешування response на файловой системе</h4>
+<p>За замовчуванням, OkHttt не кешує відповіді які є дозвилині для кешування шляхом включення HTTP заголовку <code>Cache-Control</code>. Тому Ваш кліент може витрачати час та ресурси мережі запитуючи один і той самий ресурс, знову і знову, а не просто прочитати копію збережену після першого запиту.</p>
+<p>Щоб включити кешування на файловій системі, необхідно сконфігурувати <code>com.squareup.okhttp.Cache</code> об&#39;єкт класу і передати його <code>setCache</code> методу вашого &#39;OkHttpClient&#39; об&#39;єкта. Ви маєте створити об&#39;єкт класу <code>com.squareup.okhttp.Cache</code> з параметром <code>java.util.File</code> об&#39;єкт якого є відображенням директорії та максимальний розмір кешу у байтах. Відповіді, які можуть бути в кеші, записуються в заданій директорії. Якщо кешування відповідей викликає перевищуння об&#39;єму каталогу заданий розмір, відповіді виселяють дотримуючись політики <a href="https://en.wikipedia.org/wiki/Cache_algorithms#LRU">LRU</a>.</p>
+<p>За <a href="http://stackoverflow.com/a/32752861/400717">рекомендацією Jesse Wilson</a>, відповіді зберігаються у піддіректорії <code>context.getCacheDir()</code>:</p>
+<pre class="editor-colors lang-java"><div class="line"><span class="source java"><span class="comment line double-slash java"><span class="punctuation definition comment java"><span>//</span></span><span>&nbsp;Base&nbsp;directory&nbsp;recommended&nbsp;by&nbsp;</span><span class="markup underline link http hyperlink"><span>http://stackoverflow.com/a/32752861/400717</span></span><span>.</span><span>&nbsp;</span></span></span></div><div class="line"><span class="source java"><span class="comment line double-slash java"><span class="punctuation definition comment java"><span>//</span></span><span>&nbsp;Guard&nbsp;against&nbsp;null,&nbsp;which&nbsp;is&nbsp;possible&nbsp;according&nbsp;to</span><span>&nbsp;</span></span></span></div><div class="line"><span class="source java"><span class="comment line double-slash java"><span class="punctuation definition comment java"><span>//</span></span><span>&nbsp;</span><span class="markup underline link https hyperlink"><span>https://groups.google.com/d/msg/android-developers/-694j87eXVU/YYs4b6kextwJ</span></span><span>&nbsp;and</span><span>&nbsp;</span></span></span></div><div class="line"><span class="source java"><span class="comment line double-slash java"><span class="punctuation definition comment java"><span>//</span></span><span>&nbsp;</span><span class="markup underline link http hyperlink"><span>http://stackoverflow.com/q/4441849/400717</span></span><span>.</span><span>&nbsp;</span></span></span></div><div class="line"><span class="source java"><span class="storage modifier java"><span>final</span></span><span>&nbsp;</span><span class="storage type annotation java"><span>@Nullable</span></span><span>&nbsp;</span><span class="storage type java"><span>File</span></span><span>&nbsp;baseDir&nbsp;</span><span class="keyword operator assignment java"><span>=</span></span><span>&nbsp;context</span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>getCacheDir</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span class="keyword control java"><span>if</span></span><span>&nbsp;</span><span>(</span><span>baseDir&nbsp;</span><span class="keyword operator comparison java"><span>!=</span></span><span>&nbsp;</span><span class="constant language java"><span>null</span></span><span>)</span><span>&nbsp;</span><span class="punctuation section block begin java"><span>{</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;</span><span class="storage modifier java"><span>final</span></span><span>&nbsp;</span><span class="storage type java"><span>File</span></span><span>&nbsp;cacheDir&nbsp;</span><span class="keyword operator assignment java"><span>=</span></span><span>&nbsp;</span><span class="keyword control new java"><span>new</span></span><span>&nbsp;</span><span class="storage type java"><span>File</span></span><span>(</span><span>baseDir,&nbsp;</span><span class="string quoted double java"><span class="punctuation definition string begin java"><span>&quot;</span></span><span>HttpResponseCache</span><span class="punctuation definition string end java"><span>&quot;</span></span></span><span>)</span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;okHttpClient</span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>setCache</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="keyword control new java"><span>new</span></span><span>&nbsp;</span><span class="storage type java"><span>Cache</span></span><span>(</span><span>cacheDir,&nbsp;</span><span class="constant other java"><span>HTTP_RESPONSE_DISK_CACHE_MAX_SIZE</span></span><span>)</span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span class="punctuation section block end java"><span>}</span></span></span></div></pre>
+<p>У додатку Khan Academy, ми визначили <code>HTTP_RESPONSE_DISK_CACHE_MAX_SIZE</code> розміром <code>10 * 1024 * 1024</code>, що є еквівалентно 10 MB.</p>
+<h4 id="2-stetho-">2. Інтеграція з Stetho.</h4>
+<p><a href="http://facebook.github.io/stetho/">Stetho</a> це прекрасна бібліотека від Facebookщо дає вам можливість іспектувати ваш Android додаток використовуючи <a href="https://developers.google.com/web/tools/setup/workspace/setup-devtools">Chrome Developer Tools</a> інструменти Chrome.</p>
+<p>На додаток до можливості іспектувати SQLite базу даних та іерархію view компонентів вашого додатку, Stetho надає вам можливість іспектувати кожен запіт або відповідь зроблений з використанням OkHttp.</p>
+<p>Такий самоаналіз є дуже корисним, для того щоб переконатися, що сервер повертає HTTP заголовки, які дозволяють кешування ресурсів, а також перевірка того, що жодних запитів не виконується якщо існує закешований ресурс.</p>
+<p>Щоб включити Stetho, просто додайте об&#39;єкт класу <code>StethoInterceptor</code> до списку мережевих іспекцій</p>
+<pre class="editor-colors lang-java"><div class="line"><span class="source java"><span>okHttpClient</span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>networkInterceptors</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>add</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="keyword control new java"><span>new</span></span><span>&nbsp;</span><span class="storage type java"><span>StethoInterceptor</span></span><span>(</span><span>)</span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></div></pre>
+<p>Потім, після запуску програми, необхідно відкрити Chrome і перейти за адресою <code>chrome://inspect</code>. Ідентифікатори пристроїв та додатків мають бути відображені у списку. Перейшов по його <strong>inspect</strong>  посиланню - відкриє <em>Developer Tools</em>, а потім відкрийте вкладку <strong>Network</strong>, щоб розпочати моніторинг запитів виконаних за допомогою OkHttp.</p>
+<h4 id="3-picasso-and-retrofit">3. Використовуете ваш кліет з Picasso and Retrofit</h4>
+<p>Якщо Ви використовуєте <a href="http://square.github.io/picasso/">Picasso</a> для завантаження зображень з мережі, або використовуєте <a href="http://square.github.io/retrofit/">Retrofit</a> для спрошення створення запитів та декодування відповідей. За замовчуванням, ці бібліотеки наявно створюють свої власні <code>OkHttpClient</code> для внутрішнього використання, якщо явно не вказати зворотне. Приклад з класу <code>OkHttpDownloader</code> Picasso версія 2.5.2:</p>
+<pre class="editor-colors lang-java"><div class="line"><span class="source java"><span class="storage modifier java"><span>private</span></span><span>&nbsp;</span><span class="storage modifier java"><span>static</span></span><span>&nbsp;</span><span class="storage type java"><span>OkHttpClient</span></span><span>&nbsp;</span><span class="meta method-call java"><span class="meta method java"><span>defaultOkHttpClient</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span>&nbsp;</span><span class="punctuation section block begin java"><span>{</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;</span><span class="storage type java"><span>OkHttpClient</span></span><span>&nbsp;client&nbsp;</span><span class="keyword operator assignment java"><span>=</span></span><span>&nbsp;</span><span class="keyword control new java"><span>new</span></span><span>&nbsp;</span><span class="storage type java"><span>OkHttpClient</span></span><span>(</span><span>)</span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;client</span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>setConnectTimeout</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="storage type java"><span>Utils</span></span><span class="constant other java"><span class="keyword operator dereference java"><span>.</span></span><span>DEFAULT_CONNECT_TIMEOUT_MILLIS</span></span><span class="punctuation definition seperator parameter java"><span>,</span></span><span>&nbsp;</span><span class="storage type java"><span>TimeUnit</span></span><span class="constant other java"><span class="keyword operator dereference java"><span>.</span></span><span>MILLISECONDS</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;client</span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>setReadTimeout</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="storage type java"><span>Utils</span></span><span class="constant other java"><span class="keyword operator dereference java"><span>.</span></span><span>DEFAULT_READ_TIMEOUT_MILLIS</span></span><span class="punctuation definition seperator parameter java"><span>,</span></span><span>&nbsp;</span><span class="storage type java"><span>TimeUnit</span></span><span class="constant other java"><span class="keyword operator dereference java"><span>.</span></span><span>MILLISECONDS</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;client</span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>setWriteTimeout</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="storage type java"><span>Utils</span></span><span class="constant other java"><span class="keyword operator dereference java"><span>.</span></span><span>DEFAULT_WRITE_TIMEOUT_MILLIS</span></span><span class="punctuation definition seperator parameter java"><span>,</span></span><span>&nbsp;</span><span class="storage type java"><span>TimeUnit</span></span><span class="constant other java"><span class="keyword operator dereference java"><span>.</span></span><span>MILLISECONDS</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;</span><span class="keyword control java"><span>return</span></span><span>&nbsp;client</span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span class="punctuation section block end java"><span>}</span></span></span></div></pre>
+<p>Retrofit має схожий фабрічний метод для створення власного <code>OkHttpClient</code>.</p>
+<p>Деякі зображення є найбільшими з ресурсив, які Ваш додаток буде завантажувати. Picasso має підтримку власно LRU кешу для зображень, проте це строго у пам&#39;яті. Якщо кліент намагається завантажити зображення, використовуючи Picasso, і Picasso не може знайти зоюраження у своему кеши у пам&#39;яті, то завантаження цього зображення буде делеговано своєму внутрішньому <code>OkHttpClient</code> екземпляру. І за замовчуванням, цей екземпляр буде завжди завантажувати це зображення з серверу, так як вище вказаний метод <code>defaultOkHttpClient</code>створює екземпляр не налаштований для роботи з кешем відповідей на файловій системі.  </p>
+<p>Використання власного кастомізованого екземпляру <code>OkHttpClient</code> доволяє повертати відповіді кешовані на файловій системі. В цьому випадку забраження не будуть завантажувати з серверу. Це особливо важливо, після того як додаток був запущений перший раз. У цей час Picasso in-memory кеш є холодним(порожній), отже він буде делегувати завантаження зображень екземпляру <code>OkHttpClient</code> частіще.</p>
+<p>Уникнення такої ситуації, вимагає створення екземпляра Picasso, із налаштованим <code>OkHttpClient</code>. Якщо для завантаження зображення використовується <code>Picasso.with(context).load(...)</code>, що означає використання Picasso сінгелтона, з лінивою ініціалізаціє та налаштованим за замовчуванням власним екзампляром <code>OkHttpClient</code> методом <code>with(context)</code>. Тому необхідно створити свій екземпляр &#39;Picasso&#39;, як сінглтон, до першого виклику <code>with(context)</code>.</p>
+<p>Для цього, необхідно обгорнути екземпляр <code>OkHttpClient</code> у <code>OkHttpDownloader</code>, і передати його методу <code>downloader</code> екземпляра <code>Picasso.Builder</code>:</p>
+<pre class="editor-colors lang-java"><div class="line"><span class="source java"><span class="storage modifier java"><span>final</span></span><span>&nbsp;</span><span class="storage type java"><span>Picasso</span></span><span>&nbsp;picasso&nbsp;</span><span class="keyword operator assignment java"><span>=</span></span><span>&nbsp;</span><span class="keyword control new java"><span>new</span></span><span>&nbsp;</span><span class="storage type java"><span>Picasso</span></span><span>.</span><span class="storage type java"><span>Builder</span></span><span>(</span><span>context</span><span>)</span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;&nbsp;&nbsp;.</span><span class="meta method-call java"><span class="meta method java"><span>downloader</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="keyword control new java"><span>new</span></span><span>&nbsp;</span><span class="storage type java"><span>OkHttpDownloader</span></span><span>(</span><span>okHttpClient</span><span>)</span><span class="punctuation definition method-parameters end java"><span>)</span></span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;&nbsp;&nbsp;.</span><span class="meta method-call java"><span class="meta method java"><span>build</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;</span></span></div><div class="line"><span class="source java"><span class="comment line double-slash java"><span class="punctuation definition comment java"><span>//</span></span><span>&nbsp;The&nbsp;client&nbsp;should&nbsp;inject&nbsp;this&nbsp;instance&nbsp;whenever&nbsp;it&nbsp;is&nbsp;needed,&nbsp;but&nbsp;replace&nbsp;the&nbsp;singleton</span><span>&nbsp;</span></span></span></div><div class="line"><span class="source java"><span class="comment line double-slash java"><span class="punctuation definition comment java"><span>//</span></span><span>&nbsp;instance&nbsp;just&nbsp;in&nbsp;case.</span><span>&nbsp;</span></span></span></div><div class="line"><span class="source java"><span class="storage type java"><span>Picasso</span></span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>setSingletonInstance</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span>picasso</span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></div></pre>
+<p>Для використання екземпляра <code>OkHttpClient</code> разом з <code>RestAdapter</code> у Retrofit 1.9.x, обгорніть <code>OkHttpClient</code> у екземпляр класа <code>OkClient</code> та передайте методу <code>setClient</code> екземпляру <code>RestAdapter.Builder</code></p>
+<pre class="editor-colors lang-java"><div class="line"><span class="source java"><span>restAdapterBuilder</span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>setClient</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="keyword control new java"><span>new</span></span><span>&nbsp;</span><span class="storage type java"><span>OkClient</span></span><span>(</span><span>httpClient</span><span>)</span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></div></pre>
+<p>У Retrofit 2.0, просто передайте екзепляр класа <code>OkHttpClient</code> у метод <code>client</code> екземпляру <code>RestAdapter.Builder</code>.</p>
+<p>У додатку  Khan Academy, що було взято за приклад, був використаний <a href="http://square.github.io/dagger/">Dagger</a> для того щоб лише один екземпляр класу <code>OkHttpClient</code>, і щоб саме він використовувався і Picasso і Retrofit. Був реалізований провайдер для екземпляру <code>OkHttpClient</code> помічений анотацією @Singleton.</p>
+<pre class="editor-colors lang-java"><div class="line"><span class="source java"><span class="storage type annotation java"><span>@Provides</span></span></span></div><div class="line"><span class="source java"><span class="storage type annotation java"><span>@Singleton</span></span></span></div><div class="line"><span class="source java"><span class="storage modifier java"><span>public</span></span><span>&nbsp;</span><span class="storage type java"><span>OkHttpClient</span></span><span>&nbsp;</span><span class="meta method-call java"><span class="meta method java"><span>okHttpClient</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="storage modifier java"><span>final</span></span><span>&nbsp;</span><span class="storage type java"><span>Context</span></span><span>&nbsp;context</span><span class="punctuation definition seperator parameter java"><span>,</span></span><span>&nbsp;.</span><span class="keyword operator dereference java"><span>.</span><span>.</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span>&nbsp;</span><span class="punctuation section block begin java"><span>{</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;</span><span class="storage modifier java"><span>final</span></span><span>&nbsp;</span><span class="storage type java"><span>OkHttpClient</span></span><span>&nbsp;okHttpClient&nbsp;</span><span class="keyword operator assignment java"><span>=</span></span><span>&nbsp;</span><span class="keyword control new java"><span>new</span></span><span>&nbsp;</span><span class="storage type java"><span>OkHttpClient</span></span><span>(</span><span>)</span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;</span><span class="meta method-call java"><span class="meta method java"><span>configureClient</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span>okHttpClient</span><span class="punctuation definition seperator parameter java"><span>,</span></span><span>&nbsp;.</span><span class="keyword operator dereference java"><span>.</span><span>.</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span>&nbsp;&nbsp;</span><span class="keyword control java"><span>return</span></span><span>&nbsp;okHttpClient</span><span class="punctuation terminator java"><span>;</span></span></span></div><div class="line"><span class="source java"><span class="punctuation section block end java"><span>}</span></span></span></div></pre>
+<p>Потім цей екзепляр класу <code>OkHttpClient</code> за допомогою Dagger вводився в інші провайдери, які відповідали за створення екзеплярів RestAdapter та Picasso.</p>
+<h4 id="4-user-agent-">4. Налаштування перехоплювача user agent-а</h4>
+<p>Логи та аналітика може бути набагато інформативніші, якщо кліенти надають будуть докладну інформацію у загаловку User-Agent у кожному запиті. За замовчуванням, OkHttp до заголовку User-Agent лише значення версії OkHttp. Для того щоб змінити значення у загаловку User-Agent, необхідно створити перехоплювач, який буде змінювати значення <a href="http://stackoverflow.com/a/27840834/400717">відподно до цієї відповіді на StackOverflow:</a></p>
+<pre class="editor-colors lang-java"><div class="line"><span class="source java"><span class="meta class java"><span class="storage modifier java"><span>public</span></span><span>&nbsp;</span><span class="storage modifier java"><span>final</span></span><span>&nbsp;</span><span class="meta class identifier java"><span class="storage modifier java"><span>class</span></span><span>&nbsp;</span><span class="entity name type class java"><span>UserAgentInterceptor</span></span></span><span>&nbsp;</span><span class="meta definition class implemented interfaces java"><span class="storage modifier implements java"><span>implements</span></span><span>&nbsp;</span><span class="entity other inherited-class java"><span>Interceptor</span></span><span>&nbsp;</span></span><span class="meta class body java"><span class="punctuation section class begin java"><span>{</span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span>&nbsp;&nbsp;</span><span class="storage modifier java"><span>private</span></span><span>&nbsp;</span><span class="storage modifier java"><span>static</span></span><span>&nbsp;</span><span class="meta definition variable java"><span class="storage modifier java"><span>final</span></span><span>&nbsp;</span><span class="storage type java"><span>String</span></span><span>&nbsp;</span><span class="constant variable java"><span>USER_AGENT_HEADER_NAME</span></span><span>&nbsp;</span><span class="keyword operator assignment java"><span>=</span></span><span>&nbsp;</span><span class="string quoted double java"><span class="punctuation definition string begin java"><span>&quot;</span></span><span>User-Agent</span><span class="punctuation definition string end java"><span>&quot;</span></span></span></span><span class="punctuation terminator java"><span>;</span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span>&nbsp;&nbsp;</span><span class="storage modifier java"><span>private</span></span><span>&nbsp;</span><span class="storage modifier java"><span>final</span></span><span>&nbsp;</span><span class="storage type java"><span>String</span></span><span>&nbsp;userAgentHeaderValue</span><span class="punctuation terminator java"><span>;</span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span>&nbsp;</span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span>&nbsp;&nbsp;</span><span class="meta method java"><span class="storage modifier java"><span>public</span></span><span>&nbsp;</span><span class="meta method identifier java"><span class="entity name function java"><span>UserAgentInterceptor</span></span><span>(</span><span class="storage type java"><span>String</span></span><span>&nbsp;</span><span class="variable parameter java"><span>userAgentHeaderValue</span></span><span>)</span></span><span>&nbsp;</span><span class="punctuation section method begin java"><span>{</span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span class="meta method java"><span class="meta method body java"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="variable language this java"><span>this</span></span><span class="keyword operator dereference java"><span>.</span></span><span>userAgentHeaderValue&nbsp;</span><span class="keyword operator assignment java"><span>=</span></span><span>&nbsp;</span><span class="storage type java"><span>Preconditions</span></span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>checkNotNull</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span>userAgentHeaderValue</span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span class="meta method java"><span class="meta method body java"><span>&nbsp;&nbsp;</span></span><span class="punctuation section method end java"><span>}</span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span>&nbsp;</span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span>&nbsp;&nbsp;</span><span class="storage type annotation java"><span>@Override</span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span>&nbsp;&nbsp;</span><span class="meta method java"><span class="storage modifier java"><span>public</span></span><span>&nbsp;</span><span class="meta method return-type java"><span class="storage type java"><span>Response</span></span><span>&nbsp;</span></span><span class="meta method identifier java"><span class="entity name function java"><span>intercept</span></span><span>(</span><span class="storage type java"><span>Chain</span></span><span>&nbsp;</span><span class="variable parameter java"><span>chain</span></span><span>)</span></span><span>&nbsp;</span><span class="meta throwables java"><span class="storage modifier java"><span>throws</span></span><span>&nbsp;</span><span class="storage type java"><span>IOException</span></span><span>&nbsp;</span></span><span class="punctuation section method begin java"><span>{</span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span class="meta method java"><span class="meta method body java"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="storage modifier java"><span>final</span></span><span>&nbsp;</span><span class="storage type java"><span>Request</span></span><span>&nbsp;originalRequest&nbsp;</span><span class="keyword operator assignment java"><span>=</span></span><span>&nbsp;chain</span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>request</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span class="meta method java"><span class="meta method body java"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="storage modifier java"><span>final</span></span><span>&nbsp;</span><span class="storage type java"><span>Request</span></span><span>&nbsp;requestWithUserAgent&nbsp;</span><span class="keyword operator assignment java"><span>=</span></span><span>&nbsp;originalRequest</span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>newBuilder</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span class="meta method java"><span class="meta method body java"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.</span><span class="meta method-call java"><span class="meta method java"><span>removeHeader</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="constant other java"><span>USER_AGENT_HEADER_NAME</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span class="meta method java"><span class="meta method body java"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.</span><span class="meta method-call java"><span class="meta method java"><span>addHeader</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="constant other java"><span>USER_AGENT_HEADER_NAME</span></span><span class="punctuation definition seperator parameter java"><span>,</span></span><span>&nbsp;userAgentHeaderValue</span><span class="punctuation definition method-parameters end java"><span>)</span></span></span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span class="meta method java"><span class="meta method body java"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.</span><span class="meta method-call java"><span class="meta method java"><span>build</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span class="meta method java"><span class="meta method body java"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword control java"><span>return</span></span><span>&nbsp;chain</span><span class="keyword operator dereference java"><span>.</span></span><span class="meta method-call java"><span class="meta method java"><span>proceed</span></span><span class="punctuation definition method-parameters begin java"><span>(</span></span><span>requestWithUserAgent</span><span class="punctuation definition method-parameters end java"><span>)</span></span></span><span class="punctuation terminator java"><span>;</span></span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="meta class body java"><span class="meta method java"><span class="meta method body java"><span>&nbsp;&nbsp;</span></span><span class="punctuation section method end java"><span>}</span></span></span></span></span></span></div><div class="line"><span class="source java"><span class="meta class java"><span class="punctuation section class end java"><span>}</span></span></span></span></div></pre>
+<p>Для того щоб зконструювати значення загаловку User-Agent, яке буде передаватися у конструктор UserAgentInterceptor, Ви можете використовувати все, що Ви вважаєте цінним. Ми викориристовуємо:</p>
+<ul>
+<li>Значення <code>os</code> <code>Android</code>, щоб чітко повідомити, що це Android-пристрої</li>
+<li><code>Build.MODEL</code></li>
+<li><code>Build.BRAND</code></li>
+<li><code>Build.VERSION.SDK_INT</code></li>
+<li><code>BuildConfig.APPLICATION_ID</code></li>
+<li><code>BuildConfig.VERSION_NAME</code></li>
+<li><code>BuildConfig.VERSION_CODE</code></li>
+</ul>
+<p>Останні три значення задаються значення <code>applicationId</code>, <code>versionCode</code> та <code>versionName</code> у файлі Gradle сценарія. Для отримання більш детальної інформації, зверніться документації з питань <a href="http://developer.android.com/tools/publishing/versioning.html">версіонування Вашаго додатку</a> та <a href="http://tools.android.com/tech-docs/new-build-system/applicationid-vs-packagename">налаштуванні applicationID з Gradle</a>.</p>
+<h4 id="4-timeouts">4. Обгрунтоване налаштування timeouts</h4>
+<p>До версії 2.5.0, OkHttp за замовчуванням ніколи не закривав з&#39;єднання через закунчення часу очікування(timeout). Починаючи з версії 2.5.0, час очікування на встановлення з&#39;єднання, читання наступного байту із з&#39;єднання чи запис наступного байту у з&#39;єднання може тривати не більше 10 секунд (будь-яка з вище зазначених операцій має завершитися успіхом за відведений час). Щоб змінити ці значення за замовчуванням, використовуйте <code>setConnectTimeout</code>, <code>setReadTimeout</code> чи <code>setWriteTimeout</code> відповідно.</p>
+<p>Зверніть увагу, що Picasso та Retrofit використовують різні значення для своїх екзеплярів <code>OkHttpClient</code> створених за замовчуванням.
+За замовчуванням, Picasso визначає:</p>
+<ul>
+<li>Timeout на підключення становить 15 секунд</li>
+<li>Timeout на читання становить 20 секунд</li>
+<li>Timeout на запис становить 20 секунд</li>
+</ul>
+<p>У той час як Retrofit, визначає:</p>
+<ul>
+<li>Timeout на підключення становить 20 секунд</li>
+<li>Timeout на читання становить 20 секунд</li>
+<li>Timeout на запис відсутній</li>
+</ul>
+<p>Налаштувавши Picasso та Retrofit через власний екземпляр <code>OkHttpClient</code> ви можете забезпечити однакові значення timeout-ів для всіх запитів.</p>
+<h4 id="-">Висновки</h4>
+<p>Знову ж, OkHttp пропонує досить зручну конфігурацію за замовчуванням. Виконавши  описані вище дії, Ви зможете стати більш продуктивним та досвідченим, і поліпшити якість вашого додатка.</p></body>
+</html>
