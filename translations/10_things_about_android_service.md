@@ -45,7 +45,7 @@
 Зверніть увагу на цю корисну таблицю:
 
 <p align="center">
-  ![Lifecycle of started and bound modes](images/service_lifecycle.png)
+  ![Lifecycle of started and bound modes](http://skyrylyuk.github.io/translations/images/service_lifecycle.png)
   </br>
   Життєвий цикл
 </p>
