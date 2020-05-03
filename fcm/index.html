@@ -35,7 +35,7 @@
 
         <h1 style="text-align:center">Firebase Cloud Message Consumer</h1>
 
-        <p id="token">da</p>
+        <p id="token">{{ deviceToken }}</p>
 
         <button v-on:click="requestPermission" type="button" class="btn btn-success float-right">
             Request Permission
@@ -110,10 +110,10 @@
         });
         // [END receive_message]
 
-        var example1 = new Vue({
+        var application = new Vue({
             el: '#application',
             data: {
-                message: "",
+                deviceToken: "",
                 isActive: false
             },
             methods: {
@@ -123,7 +123,8 @@
 
                     messaging.getToken().then((refreshedToken) => {
                         console.log('Token refreshed.');
-                        console.log('refreshedToken: ' + refreshedToken)
+                        console.log('==> refreshedToken: ' + refreshedToken)
+                        this.deviceToken = refreshedToken;
                     }).catch((err) => {
                         console.log('Unable to retrieve refreshed token ', err);
                         showToken('Unable to retrieve refreshed token ', err);
