@@ -45,6 +45,23 @@
             Request Token
         </button>
 
+        <table>
+            <thead>
+                <tr>
+                    <th v-for="key in columns">
+                        {{ key | capitalize }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr v-for="entry in filteredHeroes"> -->
+                <!-- <td v-for="key in columns"> -->
+                <!-- {{entry[key]}} -->
+                <!-- </td> -->
+                <!-- </tr> -->
+            </tbody>
+        </table>
+
     </div>
 
     <script>
@@ -119,6 +136,8 @@
             data: {
                 deviceToken: "",
                 isActive: false
+                // columns: ["title", "message"],
+                // gridData: []
             },
             methods: {
 
