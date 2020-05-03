@@ -127,7 +127,11 @@
             // [START_EXCLUDE]
             // Update the UI to include the received message.
             // appendMessage(payload);
-            this.gridData.push(payload);
+            var t = this.gridData;
+            console.log('Size before: ' + t.length);
+            t.push(payload);
+            console.log('Size after: ' + t.length);
+            this.gridData = t;
             // [END_EXCLUDE]
         });
         // [END receive_message]
