@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firebase Cloud Messaging</title>
+    <link rel="shortcut icon" href="favicon.png">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+
+    <!-- Vue JS -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.1.6/vue.min.js"></script>
+
+
+    <!-- Import Google Icon Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-messaging.js"></script>
+
+
+</head>
+
+<body>
+
+    <div id="application" class="container">
+
+        <h1 style="text-align:center">Firebase Cloud Message Consumer</h1>
+
+
+        <button v-on:click="requestPermission" type="button" class="btn btn-success float-right">
+            Request Permission
+        </button>
+
+    </div>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDbw7uHJqd7LG6wIeCPAJbvXr3i0ArBMss",
+            authDomain: "messagenotificationservice.firebaseapp.com",
+            databaseURL: "https://messagenotificationservice.firebaseio.com",
+            projectId: "messagenotificationservice",
+            storageBucket: "messagenotificationservice.appspot.com",
+            messagingSenderId: "468212055000",
+            appId: "1:468212055000:web:a183bd1710a1eaea9bd0ad",
+            measurementId: "G-E8JRXC7256"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // [START get_messaging_object]
+        // Retrieve Firebase Messaging object.
+        const messaging = firebase.messaging();
+
+        // [END get_messaging_object]
+        // [START set_public_vapid_key]
+        // Add the public key generated from the console here.
+        // Add the public key generated from the console here.
+        messaging.usePublicVapidKey("BD0IwtgtudOtZkgZWRaPnR6-U1fprtH6ixb-YHeZjm1x9yACDk3noYNOsJ9iSkd1Jiji3la0kdnxG4Btru3jtg4");
+
+        // [END set_public_vapid_key]
+
+        // IDs of divs that display Instance ID token UI or request permission UI.
+        const tokenDivId = 'token_div';
+        const permissionDivId = 'permission_div';
+
+        // [START refresh_token]
+        // Callback fired if Instance ID token is updated.
+        messaging.onTokenRefresh(() => {
+            messaging.getToken().then((refreshedToken) => {
+                console.log('Token refreshed.');
+                console.log('refreshedToken: ' + refreshedToken)
+                // Indicate that the new Instance ID token has not yet been sent to the
+                // app server.
+                // setTokenSentToServer(false);
+                // Send Instance ID token to app server.
+                // sendTokenToServer(refreshedToken);
+                // [START_EXCLUDE]
+                // Display new Instance ID token and clear UI of all previous messages.
+                // resetUI();
+                // [END_EXCLUDE]
+            }).catch((err) => {
+                console.log('Unable to retrieve refreshed token ', err);
+                showToken('Unable to retrieve refreshed token ', err);
+            });
+        });
+        // [END refresh_token]
+
+        // [START receive_message]
+        // Handle incoming messages. Called when:
+        // - a message is received while the app has focus
+        // - the user clicks on an app notification created by a service worker
+        //   `messaging.setBackgroundMessageHandler` handler.
+        messaging.onMessage((payload) => {
+            console.log('Message received. ', payload);
+            // [START_EXCLUDE]
+            // Update the UI to include the received message.
+            // appendMessage(payload);
+            // [END_EXCLUDE]
+        });
+        // [END receive_message]
+
+        var example1 = new Vue({
+            el: '#application',
+            data: {
+                message: "",
+                isActive: false
+            },
+            methods: {
+
+                requestPermission: function (event) {
+                    console.log('Requesting permission...');
+
+                    console.log("Refresh token: " + messaging.getToken());
+
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>
