@@ -37,8 +37,12 @@
 
         <p id="token">{{ deviceToken }}</p>
 
+        <button v-on:click="copyToClipboard" type="button" class="btn btn-success float-right">
+            Copy To Clipboard
+        </button>
+
         <button v-on:click="requestPermission" type="button" class="btn btn-success float-right">
-            Request Permission
+            Request Token
         </button>
 
     </div>
@@ -119,10 +123,10 @@
             methods: {
 
                 requestPermission: function (event) {
-                    console.log('Requesting permission...');
+                    // console.log('Requesting permission...');
+                    console.log('Token refreshed.');
 
                     messaging.getToken().then((refreshedToken) => {
-                        console.log('Token refreshed.');
                         console.log('==> refreshedToken: ' + refreshedToken)
                         this.deviceToken = refreshedToken;
                     }).catch((err) => {
@@ -130,6 +134,17 @@
                         showToken('Unable to retrieve refreshed token ', err);
                     });
 
+                },
+
+                copyToClipboard: function (event) {
+                    console.log('Copy To Clipboard');
+
+                    const el = document.createElement('textarea');
+                    el.value = this.deviceToken;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
                 }
             }
         })
