@@ -35,6 +35,7 @@
 
         <h1 style="text-align:center">Firebase Cloud Message Consumer</h1>
 
+        <p id="token"></p>
 
         <button v-on:click="requestPermission" type="button" class="btn btn-success float-right">
             Request Permission
@@ -130,6 +131,12 @@
                 }
             }
         })
+
+        function showToken(currentToken) {
+            // Show token in console and UI.
+            const tokenElement = document.querySelector('#token');
+            tokenElement.textContent = currentToken;
+        }
     </script>
 
 </body>
