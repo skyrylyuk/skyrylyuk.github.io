@@ -54,11 +54,11 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr v-for="entry in filteredHeroes"> -->
-                <!-- <td v-for="key in columns"> -->
-                <!-- {{entry[key]}} -->
-                <!-- </td> -->
-                <!-- </tr> -->
+                <tr v-for="entry in gridData">
+                    <td v-for="key in columns">
+                        {{entry[key]}}
+                    </td>
+                </tr>
             </tbody>
         </table>
 
@@ -127,6 +127,7 @@
             // [START_EXCLUDE]
             // Update the UI to include the received message.
             // appendMessage(payload);
+            this.gridData.push(payload);
             // [END_EXCLUDE]
         });
         // [END receive_message]
@@ -137,7 +138,7 @@
                 deviceToken: "",
                 isActive: false,
                 columns: ["title", "message"],
-                // gridData: []
+                gridData: []
             },
             methods: {
 
