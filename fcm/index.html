@@ -35,7 +35,7 @@
 
         <h1 style="text-align:center">Firebase Cloud Message Consumer</h1>
 
-        <p id="token"></p>
+        <p id="token">da</p>
 
         <button v-on:click="requestPermission" type="button" class="btn btn-success float-right">
             Request Permission
@@ -84,6 +84,7 @@
                 // setTokenSentToServer(false);
                 // Send Instance ID token to app server.
                 // sendTokenToServer(refreshedToken);
+                showToken(refreshedToken)
                 // [START_EXCLUDE]
                 // Display new Instance ID token and clear UI of all previous messages.
                 // resetUI();
