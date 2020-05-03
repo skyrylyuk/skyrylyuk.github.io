@@ -120,7 +120,7 @@
                 requestPermission: function (event) {
                     console.log('Requesting permission...');
 
-                    messaging.getToken.then((refreshedToken) => {
+                    messaging.getToken().then((refreshedToken) => {
                         console.log('Token refreshed.');
                         console.log('refreshedToken: ' + refreshedToken)
                     }).catch((err) => {
