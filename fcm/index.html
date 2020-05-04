@@ -151,8 +151,9 @@
                 console.log('Значение a: ' + this.a)
                 messaging.onMessage((payload) => {
                     console.log('Message received in created. ', payload);
-                    console.log("Grid data before: " + payload)
-                    this.gridData.push(payload);
+                    console.log('Message received in created. ', payload.notification);
+                    console.log('Message received in created. ', payload.notification.body);
+                    this.gridData.push(payload.notification);
                 })
             },
             methods: {
