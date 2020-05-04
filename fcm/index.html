@@ -124,18 +124,18 @@
         // - a message is received while the app has focus
         // - the user clicks on an app notification created by a service worker
         //   `messaging.setBackgroundMessageHandler` handler.
-        messaging.onMessage((payload) => {
-            console.log('Message received. ', payload);
-            // [START_EXCLUDE]
-            // Update the UI to include the received message.
-            // appendMessage(payload);
-            console.log('payload')
-            console.log(payload)
-            console.log('this.gridData')
-            // console.log(application.data.gridData)
-            srcData.push(payload);
-            // [END_EXCLUDE]
-        });
+        // messaging.onMessage((payload) => {
+        // console.log('Message received. ', payload);
+        // [START_EXCLUDE]
+        // Update the UI to include the received message.
+        // appendMessage(payload);
+        // console.log('payload')
+        // console.log(payload)
+        // console.log('this.gridData')
+        // console.log(application.data.gridData)
+        // srcData.push(payload);
+        // [END_EXCLUDE]
+        // });
         // [END receive_message]
 
         var application = new Vue({
@@ -145,6 +145,13 @@
                 isActive: false,
                 columns: ["title", "message"],
                 gridData: srcData
+            },
+            created: function () {
+                // `this` указывает на экземпляр vm
+                console.log('Значение a: ' + this.a)
+                messaging.onMessage((payload) => {
+                    console.log('Message received in created. ', payload);
+                })
             },
             methods: {
 
