@@ -45,22 +45,24 @@
             Request Token
         </button>
 
-        <table>
-            <thead>
-                <tr>
-                    <th v-for="key in columns">
-                        {{ key | capitalize }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="entry in gridData">
-                    <td v-for="key in columns">
-                        {{entry[key]}}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <table>
+                <thead>
+                    <tr>
+                        <th v-for="key in columns">
+                            {{ key | capitalize }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="entry in gridData">
+                        <td v-for="key in columns">
+                            {{entry[key]}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
     </div>
 
