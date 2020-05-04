@@ -94,6 +94,8 @@
         const tokenDivId = 'token_div';
         const permissionDivId = 'permission_div';
 
+        var srcData = [];
+
         // [START refresh_token]
         // Callback fired if Instance ID token is updated.
         messaging.onTokenRefresh(() => {
@@ -130,8 +132,8 @@
             console.log('payload')
             console.log(payload)
             console.log('this.gridData')
-            console.log(application.data.gridData)
-            application.data.gridData.push(payload);
+            // console.log(application.data.gridData)
+            srcData.push(payload);
             // [END_EXCLUDE]
         });
         // [END receive_message]
@@ -142,7 +144,7 @@
                 deviceToken: "",
                 isActive: false,
                 columns: ["title", "message"],
-                gridData: new Array("Saab", "Volvo", "BMW")
+                gridData: srcData
             },
             methods: {
 
