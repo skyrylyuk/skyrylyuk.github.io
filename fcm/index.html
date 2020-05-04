@@ -35,15 +35,20 @@
 
         <h1 style="text-align:center">Firebase Cloud Message Consumer</h1>
 
-        <p id="token">{{ deviceToken }}</p>
+        <div class="row">
+            <p id="token">{{ deviceToken }}</p>
+        </div>
 
-        <button v-on:click="copyToClipboard" type="button" class="btn btn-secondary float-right">
-            Copy To Clipboard
-        </button>
 
-        <button v-on:click="requestPermission" type="button" class="btn btn-success float-right">
-            Request Token
-        </button>
+        <div class="row">
+            <button v-on:click="copyToClipboard" type="button" class="btn btn-secondary float-right">
+                Copy To Clipboard
+            </button>
+
+            <button v-on:click="requestPermission" type="button" class="btn btn-success float-right">
+                Request Token
+            </button>
+        </div>
 
         <div class="row">
             <table>
