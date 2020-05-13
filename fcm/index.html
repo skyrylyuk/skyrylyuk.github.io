@@ -92,25 +92,23 @@
 
         <br>
 
-        <div class="row">
-            <div class="d-flex justify-content-center">
-                <table>
-                    <thead>
-                        <tr>
-                            <th v-for="key in columns">
-                                {{ key | capitalize }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="entry in gridData">
-                            <td v-for="key in columns">
-                                {{entry[key]}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="row d-flex justify-content-center">
+            <table>
+                <thead>
+                    <tr>
+                        <th v-for="key in columns">
+                            {{ key | capitalize }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="entry in gridData">
+                        <td v-for="key in columns">
+                            {{entry[key]}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
     </div>
