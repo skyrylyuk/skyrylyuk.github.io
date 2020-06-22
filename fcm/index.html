@@ -204,9 +204,9 @@
                     console.log('Message received in created. payload.data -> ', payload.data);
                     console.log('Message received in created. payload.notification.body -> ', payload.notification.body);
                     const item = {
+                        "data": payload.data,
                         "title": payload.notification.title,
-                        "body": payload.notification.body,
-                        "data": payload.data
+                        "body": payload.notification.body.get
                     }
                     console.log('item ', item);
                     this.gridData.push(payload);
