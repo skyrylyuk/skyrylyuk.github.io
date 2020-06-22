@@ -199,17 +199,17 @@
                 // `this` указывает на экземпляр vm
                 console.log('Значение a: ' + this.a)
                 messaging.onMessage((payload) => {
-                    console.log('Message received in created. payload ->  ', payload);
-                    console.log('Message received in created. payload.notification -> ', payload.notification);
-                    console.log('Message received in created. payload.data -> ', payload.data);
-                    console.log('Message received in created. payload.notification.body -> ', payload.notification.body);
+                    // console.log('Message received in created. payload ->  ', payload);
+                    // console.log('Message received in created. payload.notification -> ', payload.notification);
+                    // console.log('Message received in created. payload.data -> ', payload.data);
+                    // console.log('Message received in created. payload.notification.body -> ', payload.notification.body);
                     const item = {
                         "data": payload.data,
                         "title": payload.notification.title,
                         "body": payload.notification.body.get
                     }
                     console.log('item ', item);
-                    this.gridData.push(payload);
+                    this.gridData.push(item);
                 })
             },
             methods: {
