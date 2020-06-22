@@ -192,7 +192,7 @@
             data: {
                 deviceToken: "",
                 isActive: false,
-                columns: ["title", "body"],
+                columns: ["title", "body", "data"],
                 gridData: srcData
             },
             created: function () {
@@ -203,7 +203,13 @@
                     console.log('Message received in created. payload.notification -> ', payload.notification);
                     console.log('Message received in created. payload.data -> ', payload.data);
                     console.log('Message received in created. payload.notification.body -> ', payload.notification.body);
-                    this.gridData.push(payload.notification);
+                    const item = {
+                        "title": payload.notification.title,
+                        "body": payload.notification.body,
+                        "data": payload.data
+                    }
+                    console.log('item ', item);
+                    this.gridData.push(payload);
                 })
             },
             methods: {
