@@ -201,6 +201,7 @@
                 messaging.onMessage((payload) => {
                     console.log('Message received in created. payload ->  ', payload);
                     console.log('Message received in created. payload.notification -> ', payload.notification);
+                    console.log('Message received in created. payload.data -> ', payload.data);
                     console.log('Message received in created. payload.notification.body -> ', payload.notification.body);
                     this.gridData.push(payload.notification);
                 })
